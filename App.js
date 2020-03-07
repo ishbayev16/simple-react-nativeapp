@@ -20,6 +20,8 @@ export default function App() {
         <TextInput style={styles.input}
                   placeholder="e.g John Doe"
                   onChangeText = {(val) => setname(val)}
+                  multiline
+                  keyboardType='numeric'
                   />
       </View>
 
