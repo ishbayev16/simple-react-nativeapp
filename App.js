@@ -1,70 +1,52 @@
 import React,{useState} from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, ScrollView } from 'react-native';
 
 export default function App() {
 
   const [name, setname] = useState('John');
-  const [person, setPerson] = useState({ name: 'mario', age: 50});
+  const [people, setPeople] = useState([
+    { name: 'mario1', key: 1},
+    { name: 'mario2', key: 2 },
+    { name: 'mario3', key: 3 },
+    { name: 'mario4', key: 4 },
+    { name: 'mario5', key: 5 },
+    { name: 'mario6', key: 6 },
+    { name: 'mario7', key: 7 },
+    { name: 'mario8', key: 8 },
 
-  const clickHandler = () => {
-    setname('not John');
-    setPerson({name:'john-li', age:67});
-  }
+    ]);
 
   return (
     <View style={styles.container}>
+    <ScrollView>
+      {people.map((item)=>{
+        return(
+          <View key={item.key}>
+            <Text style = {styles.item}>
+              {item.name}
+            </Text>
+          </View>
+        )
+      })}
+      </ScrollView>
 
-
-      <View>
-        <Text>Enter name</Text>
-        <TextInput style={styles.input}
-                  placeholder="e.g John Doe"
-                  onChangeText = {(val) => setname(val)}
-                  multiline
-                  keyboardType='numeric'
-                  />
-      </View>
-
-
-      <View style={styles.header}> 
-        <Text style={styles.boldText}> my name is {name} </Text>
-      </View>
-      <View style={styles.body}>
-        <Text>person's name is {person.name} and age is {person.age}</Text>
-      </View>
-      <View style={styles.containerButton}>
-        <Button title='Update state' onPress={clickHandler}/>
-      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  input:{
-    borderWidth: 1,
-    borderColor: '#777',
-    padding: 7,
-    margin: 10,
-    width: 200,
-  },  
-  containerButton:{
-    marginTop: 20,
-  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: 40,
+    paddingHorizontal: 20,
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
-  body:{
-    backgroundColor: 'yellow',
-    padding: 40,
-  },
-  header: {
+  item:{
+    marginTop: 24,
+    padding: 30,
     backgroundColor: 'pink',
-    padding: 20,
-  },
-  boldText:{
-    fontWeight: 'bold',
-  },
+    fontSize: 30,
+  }
 });
