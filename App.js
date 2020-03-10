@@ -1,57 +1,63 @@
-import React,{useState} from 'react';
-import { StyleSheet, Text, View, Button, TextInput, ScrollView, FlatList, TouchableOpacity } from 'react-native';
+import React, {useState} from 'react';
+import { StyleSheet, Text, View, FlatList, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import Header from './components/header';
+import TodoItem from './components/todoItem';
+import AddTodo from './components/addTodo';
+import SandBox from './components/sandbox';
 
 export default function App() {
 
-  const [name, setname] = useState('John');
-  const [people, setPeople] = useState([
-    { name: 'mario1', id: '1'},
-    { name: 'mario2', id: '2' },
-    { name: 'mario3', id: '3' },
-    { name: 'mario4', id: '4' },
-    { name: 'mario5', id: '5' },
-    { name: 'mario6', id: '6' },
-    { name: 'mario7', id: '7' },
-    { name: 'mario8', id: '8' },
-    ]);
+  const [todos, setTodos] = useState([
+    {text: 'buy coffe', key: '1'},
+    {text: 'buy water', key: '2'},
+    {text: 'go gym', key: '3'},
+  ])
 
-    function pressHandler(id){
-      console.log(id);
-      setPeople((prevPeople) => {
-        return prevPeople.filter(person => person.id != id);
+  const pressHandler = (key) => {
+    setTodos((prevTodos)=>{
+        return prevTodos.filter(todo => todo.key != key);
+    })
+  }
+
+  const submitHandler = (text) => {
+    if(text.length > 3){
+      setTodos((prevTodos) => {
+        return [
+          { text: text, key: Math.random().toString },
+          ...prevTodos
+        ]
       })
+    } else{
+      Alert.alert('OOPS!', 'todos must be at least 4 characters long',[
+        {text: 'understood', onPress: () => console.log('alert closed') }
+      ])
     }
+  }
+
 
   return (
-    <View style={styles.container}>
+    <SandBox/>
+    //   <TouchableWithoutFeedback onPress={()=>{
+    //     Keyboard.dismiss();
+    //   }}>
+    // <View style={styles.container}>
+  
+    //   <Header/>
 
-{/* expect key value as string */}
-      {/* renders few of them and renders new with scroll */}
-      <FlatList 
-        numColumns={2}
-        keyExtractor={(item)=>item.id}
-        data={people}
-        renderItem={( {item} ) => (
-          <TouchableOpacity onPress={() => pressHandler(item.id)}>
-          <Text style={styles.item}>{item.name}</Text>
-          </TouchableOpacity>
-        )}
-      />
+    //   <View style={styles.content}>
+    //     <AddTodo submitHandler={submitHandler}/>
+    //     <View style={styles.list}>
+    //       <FlatList 
+    //         data = {todos}
+    //         renderItem = {({item})=>(
+    //           <TodoItem item={item} pressHandler={pressHandler}/>
+    //         )}
+    //       />
+    //     </View>
+    //   </View>
 
-          {/* scrollview renders every item */}
-
-    {/* <ScrollView>
-      {people.map(item=>(
-          <View key={item.key}>
-            <Text style = {styles.item}>
-              {item.name}
-            </Text>
-          </View>
-        
-      ))}
-      </ScrollView> */}
-
-    </View>
+    // </View>
+    // </TouchableWithoutFeedback> 
   );
 }
 
@@ -59,15 +65,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 40,
-    paddingHorizontal: 20,
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
-  item:{
-    marginTop: 24,
-    padding: 30,
-    backgroundColor: 'pink',
-    fontSize: 30,
+  content: {
+    padding: 40,
+  },
+  list: {
+    marginTop: 20,
   }
 });
